@@ -3,7 +3,7 @@
  / /___/ /  / / / _/
 /____/___/ /_/ /___/
 
-Aurora Fantasy 5.0 - composite3_fragment.glsl
+Aurora Fantasy 5.1 - composite3_fragment.glsl
 AMD FSR EASU. */ 
 
 #include "/lib/config.glsl"

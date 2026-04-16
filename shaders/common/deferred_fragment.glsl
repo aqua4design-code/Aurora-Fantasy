@@ -116,6 +116,14 @@ void main() {
     float d = texture2DLod(depthtex0, texcoord * RENDER_SCALE, 0).r;
     float linear_d = ld(d);
 
+    #if defined DISTANT_RENDER_MOD && defined DISTANT_HORIZONS
+        float dh_d = texture2DLod(dhDepthTex0, texcoord * RENDER_SCALE, 0).r;
+        float linear_dh_d = ld_dh(dh_d);
+        bool is_sky = linear_d > 0.9999 && linear_dh_d > 0.9999;
+    #else
+        bool is_sky = linear_d > 0.9999;
+    #endif
+
     vec2 eye_bright_smooth = vec2(eyeBrightnessSmooth);
 
     vec3 view_vector = vec3(1.0);
@@ -133,7 +141,7 @@ void main() {
     #endif
 
     #if (V_CLOUDS > 0 && !defined UNKNOWN_DIM) && !defined NO_CLOUDY_SKY
-        if(linear_d > 0.9999) {  // Only sky
+        if(is_sky) {  // Only sky (DH-aware)
             vec4 world_pos = gbufferModelViewInverse * gbufferProjectionInverse * (vec4(texcoord, 1.0, 1.0) * 2.0 - 1.0);
             view_vector = normalize(world_pos.xyz);
 
@@ -164,13 +172,13 @@ void main() {
     #else
         #if defined NETHER
             #if !defined DISTANT_HORIZONS
-                if(linear_d > 0.9999) {  // Only sky
+                if(is_sky) {  // Only sky (DH-aware)
                     // Brighter Nether sky for better visibility
                     block_color = vec4(mix(fogColor * 0.5, vec3(0.6, 0.45, 0.3), 0.08), 1.0);
                 }
             #endif
         #elif !defined NETHER && !defined THE_END
-            if(linear_d > 0.9999 && isEyeInWater == 1) {  // Only sky and water
+            if(is_sky && isEyeInWater == 1) {  // Only sky and water (DH-aware)
                 vec4 screen_pos = vec4(gl_FragCoord.xy * vec2(pixel_size_x, pixel_size_y), gl_FragCoord.z, 1.0);
                 vec4 fragposition = gbufferProjectionInverse * (screen_pos * 2.0 - 1.0);
 
@@ -210,7 +218,7 @@ void main() {
 
     // Underwater sky
     if(isEyeInWater == 1) {
-        if(linear_d > 0.9999) {
+        if(is_sky) {
             block_color.rgb = mix(water_light_color_base * eye_brightness_scaled_val, block_color.rgb, max(clamp(view_vector.y - 0.1, 0.0, 1.0), rainStrength));
         }
     }

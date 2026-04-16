@@ -21,6 +21,12 @@ uniform float rainStrength;
 uniform float wetness;
 uniform sampler2D depthtex0;
 uniform int isEyeInWater;
+
+#if defined DISTANT_RENDER_MOD && defined DISTANT_HORIZONS
+    uniform sampler2D dhDepthTex0;
+    uniform float dhNearPlane;
+    uniform float dhFarPlane;
+#endif
 uniform ivec2 eyeBrightnessSmooth;
 uniform float frameTime;
 uniform float viewWidth;
@@ -63,6 +69,10 @@ varying float exposure;
 #include "/lib/fps_correction.glsl"
 #include "/lib/basic_utils.glsl"
 #include "/lib/depth.glsl"
+
+#if defined DISTANT_RENDER_MOD && defined DISTANT_HORIZONS
+    #include "/lib/depth_dh.glsl"
+#endif
 
 #ifdef BLOOM
     #include "/lib/luma.glsl"
@@ -132,6 +142,14 @@ void main() {
     vec4 block_color = texture2DLod(colortex1, texcoord, 0);
     float d = texture2DLod(depthtex0, texcoord, 0).r;
     float linear_d = ld(d);
+
+    #if defined DISTANT_RENDER_MOD && defined DISTANT_HORIZONS
+        float dh_d = texture2DLod(dhDepthTex0, texcoord, 0).r;
+        float linear_dh_d = ld_dh(dh_d);
+        bool is_sky = linear_d > 0.9999 && linear_dh_d > 0.9999;
+    #else
+        bool is_sky = linear_d > 0.9999;
+    #endif
 
     vec2 eye_bright_smooth = vec2(eyeBrightnessSmooth);
 
@@ -217,9 +235,8 @@ void main() {
         float sunHorizonFade  = smoothstep(-0.05, 0.05, sunWorldDir.y);
         float moonHorizonFade = smoothstep(-0.05, 0.05, -sunWorldDir.y);
         
-        // Depth Check (Don't draw over blocks - strict sky-only using raw depth)
-        // Raw depth d=1.0 is the sky; LOD/DH chunks always have d<1.0
-        if (d > 0.9999) {
+        // Depth Check (Don't draw over blocks - strict sky-only, DH-aware)
+        if (is_sky) {
             // Weather Visibility Factor (Hide during rain)
             float weatherVisibility = 1.0 - rainStrength;
             

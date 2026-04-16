@@ -144,8 +144,17 @@ void main() {
 
         // --- AURORA (Northern Lights) ---
         #if COLOR_SCHEME == 8 || COLOR_SCHEME == 11
-            vec3 aurora = getAurora(normalize(position.xyz), sunPosition);
-            block_color.rgb += aurora;
+            #ifdef DISTANT_RENDER_MOD
+                #if MC_VERSION < 11604
+                    // For older MC, aurora must be added here (sky colors not from gaux4)
+                    vec3 aurora = getAurora(normalize(position.xyz), sunPosition);
+                    block_color.rgb += aurora;
+                #endif
+                // For MC >= 1.16.4, aurora is already in gaux4 background from prepare pass
+            #else
+                vec3 aurora = getAurora(normalize(position.xyz), sunPosition);
+                block_color.rgb += aurora;
+            #endif
         #endif
 
         #if MC_VERSION >= 11604

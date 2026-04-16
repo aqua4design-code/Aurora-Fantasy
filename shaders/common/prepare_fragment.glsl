@@ -1,4 +1,4 @@
-// Aurora Fantasy 5.0 - Prepare_fragment.glsl
+// Aurora Fantasy 5.1 - Prepare_fragment.glsl
 // Sky colors.
 
 #include "/lib/config.glsl"
@@ -58,6 +58,12 @@ varying vec4 position;
 #define FRAGMENT
 #include "/lib/downscale.glsl"
 
+#if !defined THE_END && !defined NETHER
+    #ifdef DISTANT_RENDER_MOD
+        #include "/lib/aurora.glsl"
+    #endif
+#endif
+
 // MAIN FUNCTION ------------------
 
 void main() {
@@ -75,6 +81,16 @@ void main() {
         vec3 block_color = ZENITH_DAY_COLOR;
     #else
         #include "/src/get_sky.glsl"
+
+        // Aurora in fog texture for DH terrain blending
+        #ifdef DISTANT_RENDER_MOD
+            #if COLOR_SCHEME == 8 || COLOR_SCHEME == 11
+            {
+                vec3 aurora_viewDir = normalize((gbufferModelViewInverse * vec4(nfragpos, 0.0)).xyz);
+                block_color += getAurora(aurora_viewDir, sunPosition);
+            }
+            #endif
+        #endif
     #endif
     #include "/src/writebuffers.glsl"
 }

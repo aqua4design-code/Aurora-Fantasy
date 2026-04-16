@@ -1,88 +1,79 @@
-# ✨ Aurora Fantasy 5.0 (AF11)
+# ✨ Aurora Fantasy 5.1 (AF11)
 
 A fantasy-themed shader pack for Minecraft Java Edition, based on the open-source MakeUp shader by KDXavier.
 
 ---
 
-## What's New
+## What's New in 5.1
 
-### Added
-- 🌧️ Rain puddles appear on the ground when it rains
-- 💧 Animated ripple effects on puddle surfaces
-- 🪞 Screen-space reflections on wet surfaces and water
-- 🌊 White foam where water meets blocks
-- 🍃 Light passes through leaves (subsurface scattering)
-- 🌤️ New atmosphere rendering system
-- ❄️ Snow fog effect
-- 👤 Player shadow now appears on the ground
-
-### Fixed
-- ☀️ Sun and moon now stay locked to the sky properly with smooth horizon fade
-- ❄️ Snow particles during snowstorms now look brighter and more natural
-
-### Changed
-- Simplified settings — only 4 graphics profiles (HIGH, MEDIUM, LOW, POTATO)
-- Clean settings menu with no extra options
+- 🚀 New **EXTREME** profile — everything at maximum quality
+- 🔄 Profiles redesigned: **EXTREME**, **HIGH**, **MEDIUM**
+- 🛠️ Bug fixes and settings cleanup
+- 🌐 **Distant Horizons compatibility**
+  - New option in shader settings to fix visual problems when using render distance mods like Distant Horizons
+  - When enabled, the shader adjusts aurora, twilight, fog, and sky rendering to work correctly with very far render distances
+  - Go to **Shader Settings → Distant Render Mod** and turn it ON if you use these mods
+  - Keep it OFF for vanilla Minecraft
 
 ---
 
 ## Graphics Profiles
 
-Choose your profile from the shader settings menu. Each profile has a big difference from the others:
+### EXTREME
+Everything at maximum. For powerful GPUs only.
 
-### HIGH — Best visuals
-Everything is ON at maximum. Best reflections, rain puddles with animated ripples, dynamic clouds, bloom, god rays, motion blur, colored shadows.
+### HIGH
+Strong visuals with good performance.
 
-### MEDIUM — Balanced
-Good visuals with decent FPS. Reflections are good but not max. Rain puddles without ripples. Clouds and bloom still active. No motion blur.
-
-### LOW — Performance
-Shadows are on but short range. No bloom, no rain puddles, no god rays, no reflections on materials. Simple clouds. Good for weak GPUs.
-
-### POTATO — Maximum FPS
-Almost everything is OFF. No shadows, no reflections, no clouds, no bloom, no rain effects, no waving plants. Only basic rendering.
+### MEDIUM
+Balanced for mid-range GPUs.
 
 ### Comparison
 
 ```
-╔══════════════════╦══════════════════╦══════════════════╦══════════════════╦══════════════════╗
-║     Feature      ║      HIGH        ║     MEDIUM       ║      LOW         ║     POTATO       ║
-╠══════════════════╬══════════════════╬══════════════════╬══════════════════╬══════════════════╣
-║ Shadows          ║ Max range        ║ Medium range     ║ Short range      ║ Off              ║
-║ Shadow Quality   ║ 6                ║ 3                ║ 1                ║ --               ║
-║ Reflections      ║ Raymarched 100%  ║ Good 80%         ║ Basic 60%        ║ Off              ║
-║ Rain Puddles     ║ On + Ripples     ║ On (no ripples)  ║ Off              ║ Off              ║
-║ Puddle Coverage  ║ 80%              ║ 50%              ║ --               ║ --               ║
-║ Clouds           ║ Dynamic + Cirrus ║ Static + Cirrus  ║ Static           ║ Off              ║
-║ Bloom            ║ On (strong)      ║ On (normal)      ║ Off              ║ Off              ║
-║ God Rays         ║ On (high)        ║ On (medium)      ║ Off              ║ Off              ║
-║ Motion Blur      ║ On               ║ Off              ║ Off              ║ Off              ║
-║ Ambient Occl.    ║ On               ║ Off              ║ Off              ║ Off              ║
-║ Water Foam       ║ On               ║ On               ║ Off              ║ Off              ║
-║ Colored Shadows  ║ On               ║ On               ║ Off              ║ Off              ║
-║ Glowing Ores     ║ On               ║ On               ║ Off              ║ Off              ║
-║ Waving Plants    ║ On               ║ On               ║ On               ║ Off              ║
-║ Fog              ║ On               ║ On               ║ On               ║ Off              ║
-║ Anti-Aliasing    ║ Sharp TAA        ║ Sharp TAA        ║ TAA              ║ Off              ║
-╚══════════════════╩══════════════════╩══════════════════╩══════════════════╩══════════════════╝
+╔══════════════════╦══════════════════╦══════════════════╦══════════════════╗
+║     Feature      ║     EXTREME      ║      HIGH        ║     MEDIUM       ║
+╠══════════════════╬══════════════════╬══════════════════╬══════════════════╣
+║ Shadows          ║ Range 8, Qty 6   ║ Range 6, Qty 5   ║ Range 4, Qty 3   ║
+║ Shadow Blur      ║ 5.0              ║ 5.0              ║ 3.0              ║
+║ Reflections      ║ 64 steps         ║ 32 steps         ║ 8 steps          ║
+║ SSR Strength     ║ 10               ║ 10               ║ 6                ║
+║ Rain Puddles     ║ On + Ripples     ║ On + Ripples     ║ On (no ripples)  ║
+║ Puddle Coverage  ║ 100%             ║ 80%              ║ 40%              ║
+║ Clouds           ║ Dynamic + Cirrus ║ Dynamic + Cirrus ║ Static + Cirrus  ║
+║ Cloud Density    ║ 1.8              ║ 1.2              ║ 0.8              ║
+║ Bloom Samples    ║ 8                ║ 5                ║ 2                ║
+║ Bloom Strength   ║ 1.5              ║ 1.2              ║ 0.9              ║
+║ Motion Blur      ║ On (8 samples)   ║ Off              ║ Off              ║
+║ Ambient Occl.    ║ On (10 steps)    ║ On (5 steps)     ║ Off              ║
+║ Water Foam       ║ Width 3.0        ║ Width 2.0        ║ Width 1.0        ║
+║ Colored Shadows  ║ On               ║ On               ║ Off              ║
+║ Glowing Ores     ║ On               ║ On               ║ On               ║
+║ Waving Plants    ║ On               ║ On               ║ On               ║
+║ Wind Force       ║ 2.0              ║ 1.25             ║ 0.75             ║
+║ Sandstorm        ║ On               ║ On               ║ Off              ║
+║ Anti-Aliasing    ║ TAA + FXAA       ║ TAA              ║ TAA              ║
+║ Night Bright     ║ 0.50             ║ 0.60             ║ 0.55             ║
+╚══════════════════╩══════════════════╩══════════════════╩══════════════════╝
 ```
 
 ---
 
 ## Features
 
-- ☀️ Realistic shadows with colored glass shadows
+- ☀️ Shadows with colored glass support
 - ☁️ Volumetric clouds with cirrus layer
-- 🌊 Realistic water with waves and reflections
-- 🌧️ Rain puddles and wet surfaces
-- ⭐ Stars, sun, and moon
-- 🌈 12+ color schemes
-- 💎 Glowing ores and shiny materials
-- 🌅 God rays and bloom
+- 🌌 Aurora borealis
+- 🌊 Water with waves, foam, and reflections
+- 🌧️ Rain puddles with ripple animation
+- ⭐ Animated stars
+- 💎 Glowing ores
+- 🌸 Bloom
 - 🍃 Wind-animated plants
-- 🌫️ Biome fog effects
-- 🏜️ Desert sandstorms when it rains in sandy biomes
-- 🌍 Overworld, Nether, The End support
+- 🌫️ Biome fog and snow fog
+- 🎥 Motion blur
+- 🌈 13+ color schemes
+- 🌍 Overworld, Nether, The End
 
 ---
 

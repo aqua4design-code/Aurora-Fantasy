@@ -90,6 +90,13 @@ in2bubble - Based on MakeUp by KDXavier - GNU Lesser General Public License v3.0
   #define REFLEX_INDEX 0.7
 #endif
 
+// Distant Rendering Mod Support (Distant Horizons, etc.)
+//#define DISTANT_RENDER_MOD // Enable compatibility with distant rendering mods like Distant Horizons. Fixes aurora/twilight rendering issues.
+
+#ifdef DISTANT_RENDER_MOD
+  // Don't remove
+#endif
+
 #define FOG_ACTIVE // Toggle fog
 #define NETHER_FOG_DISTANCE 0 // [0 1] // Sets Nether fog distance to half of the render distance (maximum of 96 blocks)
 #define ACERCADE 4 // [1 2 3 4 5 6 7]

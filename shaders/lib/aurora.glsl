@@ -44,7 +44,16 @@ vec3 getAurora(vec3 viewDir, vec3 sunPos) {
     if (nightFactor < 0.01) return vec3(0.0);
 
     // 2. Coordinate System
-    vec2 p = viewDir.xz / (viewDir.y + 0.15); 
+    #ifdef DISTANT_RENDER_MOD
+        // Smooth transition near horizon: original projection above, gradually
+        // slows down the coordinate expansion below, so the aurora pattern
+        // continues naturally downward without stretching or hard cutoff
+        float raw_denom = viewDir.y + 0.15;
+        float denom = 0.2 + raw_denom * raw_denom / (raw_denom + 0.2);
+        vec2 p = viewDir.xz / denom; 
+    #else
+        vec2 p = viewDir.xz / (viewDir.y + 0.15); 
+    #endif
     
     vec3 finalColor = vec3(0.0);
     // Increased speed (0.02 -> 0.05) for better visibility
@@ -109,7 +118,13 @@ vec3 getAurora(vec3 viewDir, vec3 sunPos) {
     }
     
     // 4. Horizon Fade
-    float horizonFade = smoothstep(0.0, 0.1, viewDir.y);
+    #ifdef DISTANT_RENDER_MOD
+        // Extended far below horizon so start/end points are hidden behind terrain
+        // even with extended render distance mods like Distant Horizons
+        float horizonFade = smoothstep(-0.15, 0.01, viewDir.y);
+    #else
+        float horizonFade = smoothstep(0.0, 0.1, viewDir.y);
+    #endif
     
     // Brightness
     float brightness = 0.6; 

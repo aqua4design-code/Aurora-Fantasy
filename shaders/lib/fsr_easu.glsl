@@ -3,7 +3,7 @@
  / /___/ /  / / / _/
 /____/___/ /_/ /___/
 
-Aurora Fantasy 5.0 - fsr_easu.glsl #include "/lib/fsr_easu.glsl"
+Aurora Fantasy 5.1 - fsr_easu.glsl #include "/lib/fsr_easu.glsl"
 FSR EASU. */
 
 /*
